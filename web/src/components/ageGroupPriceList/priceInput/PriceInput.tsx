@@ -2,12 +2,13 @@ import React from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import { InputAdornment } from '@mui/material';
 
-import { PriceInputContainer, PriceInputTextField, FieldSmallDescription } from './PriceInputStyle';
+import { FieldSmallDescription } from '../../commonUI/CommonUI';
+import { PriceInputContainer, PriceInputTextField } from './PriceInputStyle';
 import { addComma } from '../../../utils/utils';
 
 type FormValues = {
   priceInput: string;
-  ageStart: string;
+  ageGroup: number[];
 };
 
 interface PriceInputProps extends UseControllerProps<FormValues> {}
@@ -22,7 +23,6 @@ export const useHook = (props: UseControllerProps<FormValues>) => {
   // const isNotNumeric = !/^-?\d+(\.\d*)?$/.test(field.value);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
     const unformattedValue = event.target.value.replace(/,/g, '');
     field.onChange(unformattedValue);
   };

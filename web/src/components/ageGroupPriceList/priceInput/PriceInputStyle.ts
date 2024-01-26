@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { TextField, Typography } from '@mui/material';
+import { TextField } from '@mui/material';
 
 export const PriceInputContainer = styled('div')({
   padding: 8,
@@ -45,10 +45,4 @@ export const PriceInputTextField = styled(TextField)({
     margin: 0,
     opacity: 0.8,
   },
-});
-
-
-export const FieldSmallDescription = styled(Typography)({
-  fontSize: 12,
-  color: '#666666',
 });
