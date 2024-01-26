@@ -7,18 +7,17 @@ import { IIntervalResult } from './types/interfaces';
  */
 export function addComma(input: string): string {
 
-  const isValidInput = /^-?\d+(\.\d+)?$/.test(input);
-  
-  if (!isValidInput) {
-    throw new Error('Invalid input. Please provide a valid number string.');
-  }
+  // 判斷是否包含小數點
+  const hasDecimal = input.includes('.');
+  // 過濾逗號
+  const filteredInput = input.replace(/,/g, '');
 
-  const [integerPart, decimalPart] = input.toString().split('.');
+  // 分離整數和小數部分
+  const [integerPart, decimalPart] = filteredInput.split('.');
 
   const formattedIntegerPart = integerPart.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 
-  const result = decimalPart ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
-
+  const result = hasDecimal ? `${formattedIntegerPart}.${decimalPart}` : formattedIntegerPart;
   return result;
 }
 

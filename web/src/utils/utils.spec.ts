@@ -6,6 +6,10 @@ describe('addComma function', () => {
     expect(addComma('0')).toBe('0');
   });
 
+  it('should format zero without commas', () => {
+    expect(addComma('0.123')).toBe('0.123');
+  });
+
   // 測試正數
   it('should format positive number with commas', () => {
     expect(addComma('12')).toBe('12');
@@ -41,10 +45,6 @@ describe('addComma function', () => {
     expect(addComma('-1000000.0000123456')).toBe('-1,000,000.0000123456');
   });
 
-  // 測試非數字的輸入
-  it('should throw error for non-numeric input', () => {
-    expect(() => addComma('abc')).toThrowError('Invalid input. Please provide a valid number string.');
-  });
 });
 
 describe('getNumberIntervals', () => {
