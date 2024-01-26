@@ -1,16 +1,19 @@
 import { IIntervalResult } from './types/interfaces';
 
 /**
- * 將數字轉換成字串，並在整數部分加上千分位。
- * @param {number} number - 要格式化的數字。
+ * 將數字字串轉換成字串，並在整數部分加上千分位。
+ * @param {string} input - 要格式化的數字字串。
  * @returns {string} - 格式化後的字串。
  */
-export function addComma(number: number): string {
-  if (typeof number !== 'number' || Number.isNaN(number)) {
-    throw new Error('Invalid input. Please provide a valid number.');
+export function addComma(input: string): string {
+
+  const isValidInput = /^-?\d+(\.\d+)?$/.test(input);
+  
+  if (!isValidInput) {
+    throw new Error('Invalid input. Please provide a valid number string.');
   }
 
-  const [integerPart, decimalPart] = number.toString().split('.');
+  const [integerPart, decimalPart] = input.toString().split('.');
 
   const formattedIntegerPart = integerPart.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');
 
