@@ -1,36 +1,53 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useController, UseControllerProps, Control } from 'react-hook-form';
 
-import { MenuItem, FormControl, InputLabel, Stack, Box } from '@mui/material';
+import { MenuItem, Stack, FormHelperText } from '@mui/material';
 import { PriceListFormValues } from '../types/types';
-import { AgeGroupSelectContainer, MiddleAdornment, AgeSelect } from '../ageGroupSelect/AgeGroupSelectStyle';
+import {
+  AgeGroupSelectContainer,
+  MiddleAdornment,
+  AgeSelect,
+} from '../ageGroupSelect/AgeGroupSelectStyle';
 import { FieldSmallDescription } from '../../commonUI/CommonUI';
-
 
 interface AgeGroupSelectProps extends UseControllerProps<PriceListFormValues> {
   control: Control<PriceListFormValues>;
+  handleGroupAgeSelectChange: () => void;
+  ageGroups: number[];
+  isError: boolean;
+}
+interface AgeGroupSelectStates {
+  startAge: number;
+  endAge: number;
+  isError: boolean;
+  field: UseControllerProps;
+  ageGroups: number[];
+}
+interface AgeGroupSelectActions {
+  handleStartAgeChange: (newStartAge: number) => void;
+  handleEndAgeChange: (newEndAge: number) => void;
 }
 
-export const useAgeGroupSelect = (props: UseControllerProps<PriceListFormValues>) => {
+export const useAgeGroupSelect = (
+  props: AgeGroupSelectProps,
+): [AgeGroupSelectStates, AgeGroupSelectActions] => {
   const [startAge, setStartAge] = useState(0);
   const [endAge, setEndAge] = useState(20);
+  const { handleGroupAgeSelectChange, ageGroups, isError } = props;
 
-  const {
-    field,
-    fieldState,
-  } = useController({ ...props });
+  const { field } = useController({ ...props });
 
-  const ageGroups = useMemo(() => Array.from({ length: 21 }, (_, index) => index), []);
-
-  const handleStartAgeChange = useCallback((newStartAge: number) => {
+  const handleStartAgeChange = (newStartAge: number) => {
     setStartAge(newStartAge);
     field.onChange([newStartAge, endAge]);
-  }, [field, endAge]);
+    handleGroupAgeSelectChange();
+  };
 
-  const handleEndAgeChange = useCallback((newEndAge: number) => {
+  const handleEndAgeChange = (newEndAge: number) => {
     setEndAge(newEndAge);
     field.onChange([startAge, newEndAge]);
-  }, [field, startAge]);
+    handleGroupAgeSelectChange();
+  };
 
   useEffect(() => {
     if (startAge > endAge) {
@@ -41,14 +58,14 @@ export const useAgeGroupSelect = (props: UseControllerProps<PriceListFormValues>
     }
   }, [startAge, endAge]);
 
-  const states = { startAge, endAge, ageGroups };
+  const states = { field, startAge, endAge, ageGroups, isError };
   const actions = { handleStartAgeChange, handleEndAgeChange };
-  return [states, actions, field, fieldState] as const;
+  return [states, actions];
 };
 
 const AgeGroupSelect: React.FC<AgeGroupSelectProps> = (props) => {
-  const [states, actions, field, fieldState] = useAgeGroupSelect(props);
-  const { ageGroups, startAge, endAge } = states;
+  const [states, actions] = useAgeGroupSelect(props);
+  const { ageGroups, startAge, endAge, isError, field } = states;
   const { handleStartAgeChange, handleEndAgeChange } = actions;
 
   return (
@@ -68,8 +85,9 @@ const AgeGroupSelect: React.FC<AgeGroupSelectProps> = (props) => {
           {...field}
           value={startAge}
           onChange={(e) => handleStartAgeChange(Number(e.target.value))}
+          error={isError}
         >
-          {ageGroups.map((age) => (
+          {ageGroups.map((age: number) => (
             <MenuItem key={age} value={age} disabled={age > endAge}>
               {age}
             </MenuItem>
@@ -89,14 +107,18 @@ const AgeGroupSelect: React.FC<AgeGroupSelectProps> = (props) => {
           }}
           value={endAge}
           onChange={(e) => handleEndAgeChange(Number(e.target.value))}
+          error={isError}
         >
-          {ageGroups.map((age) => (
+          {ageGroups.map((age: number) => (
             <MenuItem key={age} value={age} disabled={age < startAge}>
               {age}
             </MenuItem>
           ))}
         </AgeSelect>
       </Stack>
+      {isError && (
+        <FormHelperText error>年齡區間不可重疊</FormHelperText>
+      )}
     </AgeGroupSelectContainer>
   );
 };
