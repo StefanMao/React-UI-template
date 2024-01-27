@@ -2,7 +2,6 @@ import { styled } from '@mui/system';
 import { Box, Select } from '@mui/material';
 
 export const AgeGroupSelectContainer = styled('div')({
-  border: '1px solid red',
   padding: 8,
   width: '300px',
   display: 'flex',

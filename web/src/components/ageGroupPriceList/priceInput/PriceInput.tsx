@@ -2,18 +2,14 @@ import React from 'react';
 import { useController, UseControllerProps } from 'react-hook-form';
 import { InputAdornment } from '@mui/material';
 
+import { PriceListFormValues } from '../types/types';
 import { FieldSmallDescription } from '../../commonUI/CommonUI';
 import { PriceInputContainer, PriceInputTextField } from './PriceInputStyle';
 import { addComma } from '../../../utils/utils';
 
-type FormValues = {
-  priceInput: string;
-  ageGroup: number[];
-};
+interface PriceInputProps extends UseControllerProps<PriceListFormValues> {}
 
-interface PriceInputProps extends UseControllerProps<FormValues> {}
-
-export const useHook = (props: UseControllerProps<FormValues>) => {
+export const useHook = (props: UseControllerProps<PriceListFormValues>) => {
   const {
     field,
     fieldState: { invalid, error },

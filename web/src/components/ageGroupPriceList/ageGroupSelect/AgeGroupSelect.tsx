@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useController, UseControllerProps, Control } from 'react-hook-form';
-import { MenuItem, FormControl, InputLabel, Stack, Box } from '@mui/material';
 
+import { MenuItem, FormControl, InputLabel, Stack, Box } from '@mui/material';
+import { PriceListFormValues } from '../types/types';
 import { AgeGroupSelectContainer, MiddleAdornment, AgeSelect } from '../ageGroupSelect/AgeGroupSelectStyle';
 import { FieldSmallDescription } from '../../commonUI/CommonUI';
 
-type FormValues = {
-  priceInput: string;
-  ageGroup: number[];
-};
 
-interface AgeGroupSelectProps extends UseControllerProps<FormValues> {
-  control: Control<FormValues>;
+interface AgeGroupSelectProps extends UseControllerProps<PriceListFormValues> {
+  control: Control<PriceListFormValues>;
 }
 
-export const useAgeGroupSelect = (props: UseControllerProps<FormValues>) => {
+export const useAgeGroupSelect = (props: UseControllerProps<PriceListFormValues>) => {
   const [startAge, setStartAge] = useState(0);
   const [endAge, setEndAge] = useState(20);
 
@@ -54,7 +51,6 @@ const AgeGroupSelect: React.FC<AgeGroupSelectProps> = (props) => {
   const { ageGroups, startAge, endAge } = states;
   const { handleStartAgeChange, handleEndAgeChange } = actions;
 
-  console.log('fieldState', fieldState);
   return (
     <AgeGroupSelectContainer>
       <FieldSmallDescription align="left">年齡</FieldSmallDescription>
