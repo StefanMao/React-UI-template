@@ -1,6 +1,6 @@
 export type PriceListFormValues = {
   ageGroupPriceList: {
-    priceInput: string;
-    ageGroupInterval: number[];
+    price: string;
+    ageGroup: number[];
   }[];
 };

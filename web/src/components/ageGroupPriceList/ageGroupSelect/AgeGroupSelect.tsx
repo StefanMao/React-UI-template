@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useController, UseControllerProps, Control } from 'react-hook-form';
 
-import { MenuItem, Stack, FormHelperText } from '@mui/material';
+import { MenuItem, Stack } from '@mui/material';
 import { PriceListFormValues } from '../types/types';
 import {
   AgeGroupSelectContainer,

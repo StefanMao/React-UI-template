@@ -15,12 +15,13 @@ export const useHook = (props: UseControllerProps<PriceListFormValues>) => {
     fieldState: { invalid, error },
   } = useController(props);
 
-  // To do : Add validation logic and other error msg
-  // const isNotNumeric = !/^-?\d+(\.\d*)?$/.test(field.value);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const unformattedValue = event.target.value.replace(/,/g, '');
-    field.onChange(unformattedValue);
+    const input = event.target.value;
+
+    if (/^[0-9.,]*$/.test(input)) {
+      const unformattedValue = input.replace(/,/g, '');
+      field.onChange(unformattedValue);
+    }
   };
 
   const states = { invalid, error };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useFieldArray, useForm, Control, FieldArrayWithId } from 'react-hook-form';
+import { useFieldArray, useForm, Control, FieldArrayWithId, useWatch } from 'react-hook-form';
 import { Stack, Divider } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
@@ -18,6 +18,10 @@ import {
   AddPriceSettingButton,
 } from './AgeGroupPriceListStyle';
 
+interface AgeGroupPriceListProps {
+  onChange: (data: any) => void;
+}
+
 interface AgeGroupPriceListStates {
   control: Control<PriceListFormValues, any>;
   fields: FieldArrayWithId<PriceListFormValues, 'ageGroupPriceList', 'id'>[];
@@ -34,7 +38,9 @@ interface AgeGroupPriceListActions {
 
 const ageSelectOptions = Array.from({ length: 21 }, (_, index) => index);
 
-export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceListActions] => {
+export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPriceListStates, AgeGroupPriceListActions] => {
+  const { onChange } = props;
+
   const [numberIntervalsResult, setNumberIntervalsResult] = useState<IIntervalResult>({
     overlap: [],
     notInclude: [],
@@ -42,9 +48,14 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
   const [isAgeGroupFieldsError, setIsAgeGroupFieldsError] = useState<boolean>(false);
   const { handleSubmit, control, watch } = useForm<PriceListFormValues>({
     defaultValues: {
-      ageGroupPriceList: [{ priceInput: '', ageGroupInterval: [0, 20] }],
+      ageGroupPriceList: [{ price: '', ageGroup: [0, 20] }],
     },
     mode: 'onChange',
+  });
+
+  const ageGroupPriceListResult = useWatch({
+    control: control,
+    name: "ageGroupPriceList"
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'ageGroupPriceList' });
@@ -56,7 +67,7 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
 
   const combinedAgeGroupIntervals = (): number[][] => {
     const ageGroupPriceList = watch('ageGroupPriceList');
-    return ageGroupPriceList.map((item) => item.ageGroupInterval);
+    return ageGroupPriceList.map((item) => item.ageGroup);
   };
 
   const handleFormSubmit = handleSubmit((data) => {
@@ -64,7 +75,7 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
   });
 
   const handleAppend = (): void => {
-    append({ priceInput: '', ageGroupInterval: [0, 20] });
+    append({ price: '', ageGroup: [0, 20] });
     handleGroupAgeSelectChange();
   };
   const handleRemove = (index: number): void => {
@@ -86,6 +97,14 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
     updateAgeGroupFieldsError();
   }, [numberIntervalsResult, updateAgeGroupFieldsError]);
 
+  useEffect(() => {
+    const resultWithFloatPrices = ageGroupPriceListResult.map(item => ({
+      ...item,
+      price: parseFloat(item.price)
+    }));
+    onChange(resultWithFloatPrices);
+  }, [ageGroupPriceListResult, onChange]);
+
   const states = { control, fields, isAgeGroupFieldsError, isAddPriceSettingButtonDisabled };
   const actions = {
     handleAppend,
@@ -96,8 +115,8 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
   return [states, actions];
 };
 
-const AgeGroupPriceList: React.FC = () => {
-  const [states, actions] = useAgeGroupPriceList();
+const AgeGroupPriceList: React.FC<AgeGroupPriceListProps> = (props) => {
+  const [states, actions] = useAgeGroupPriceList(props);
   const { control, fields, isAgeGroupFieldsError, isAddPriceSettingButtonDisabled } = states;
   const {
     handleAppend,
@@ -105,6 +124,7 @@ const AgeGroupPriceList: React.FC = () => {
     handleFormSubmit,
     handleGroupAgeSelectChange,
   } = actions;
+
 
   return (
     <AgeGroupPriceListContainer>
@@ -118,7 +138,7 @@ const AgeGroupPriceList: React.FC = () => {
             <Stack direction="row" spacing={0}>
               <AgeGroupSelect
                 control={control}
-                name={`ageGroupPriceList.${index}.ageGroupInterval`}
+                name={`ageGroupPriceList.${index}.ageGroup`}
                 rules={{ required: true }}
                 handleGroupAgeSelectChange={handleGroupAgeSelectChange}
                 ageGroups={ageSelectOptions}
@@ -126,7 +146,7 @@ const AgeGroupPriceList: React.FC = () => {
               />
               <PriceInput
                 control={control}
-                name={`ageGroupPriceList.${index}.priceInput`}
+                name={`ageGroupPriceList.${index}.price`}
                 rules={{ required: true }}
               />
             </Stack>
