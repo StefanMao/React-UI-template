@@ -3,7 +3,8 @@ import { TextField } from '@mui/material';
 
 export const PriceInputContainer = styled('div')({
   padding: 8,
-  width: '300px',
+  width: 300,
+  flex: 1,
 });
 
 export const PriceInputTextField = styled(TextField)({

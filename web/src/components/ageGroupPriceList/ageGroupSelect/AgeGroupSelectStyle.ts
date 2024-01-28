@@ -3,9 +3,10 @@ import { Box, Select, FormHelperText } from '@mui/material';
 
 export const AgeGroupSelectContainer = styled('div')({
   padding: 8,
-  width: '300px',
+  width: 300,
   display: 'flex',
   flexDirection: 'column',
+  flex: 1,
 });
 
 export const AgeSelect = styled(Select)({
