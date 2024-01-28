@@ -51,8 +51,6 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
 
   const handleGroupAgeSelectChange = () => {
     const combinedAgeResult = combinedAgeGroupIntervals();
-    // console.log('combinedAgeResult', combinedAgeResult);
-    // console.log('getNumberIntervals(combinedAgeResult)', getNumberIntervals(combinedAgeResult));
     setNumberIntervalsResult(getNumberIntervals(combinedAgeResult));
   };
 
@@ -86,8 +84,6 @@ export const useAgeGroupPriceList = (): [AgeGroupPriceListStates, AgeGroupPriceL
 
   useEffect(() => {
     updateAgeGroupFieldsError();
-    // console.log('overlap', numberIntervalsResult.overlap);
-    // console.log('notInclude', numberIntervalsResult.notInclude);
   }, [numberIntervalsResult, updateAgeGroupFieldsError]);
 
   const states = { control, fields, isAgeGroupFieldsError, isAddPriceSettingButtonDisabled };
@@ -112,7 +108,7 @@ const AgeGroupPriceList: React.FC = () => {
 
   return (
     <AgeGroupPriceListContainer>
-      <form style={{ flex: 'auto', height: 0, overflow: 'auto' }} onSubmit={handleFormSubmit}>
+      <form style={{ flex: 'auto', height: 0, overflow: 'auto', paddingRight: 12 }} onSubmit={handleFormSubmit}>
         {fields.map((field, index) => (
           <AgeGroupInputContainer
             key={field.id}

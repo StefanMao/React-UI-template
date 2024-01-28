@@ -7,7 +7,7 @@ export const AgeGroupPriceListContainer = styled('div')({
   flexDirection: 'column',
   border: '2px dashed grey',
   width: '70%',
-  padding: 16,
+  padding: 8,
   position: 'relative',
   height: '100%', 
 });
