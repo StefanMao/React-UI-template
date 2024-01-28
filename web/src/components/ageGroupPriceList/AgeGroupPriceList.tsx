@@ -48,7 +48,7 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
   const [isAgeGroupFieldsError, setIsAgeGroupFieldsError] = useState<boolean>(false);
   const { handleSubmit, control, watch } = useForm<PriceListFormValues>({
     defaultValues: {
-      ageGroupPriceList: [{ price: '', ageGroup: [0, 20] }],
+      ageGroupPriceList: [{ price: '0', ageGroup: [0, 20] }],
     },
     mode: 'onChange',
   });
@@ -75,7 +75,7 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
   });
 
   const handleAppend = (): void => {
-    append({ price: '', ageGroup: [0, 20] });
+    append({ price: '0', ageGroup: [0, 20] });
     handleGroupAgeSelectChange();
   };
   const handleRemove = (index: number): void => {
@@ -100,7 +100,7 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
   useEffect(() => {
     const resultWithFloatPrices = ageGroupPriceListResult.map(item => ({
       ...item,
-      price: parseFloat(item.price)
+      price: item.price === '' ? null : parseFloat(item.price),
     }));
     onChange(resultWithFloatPrices);
   }, [ageGroupPriceListResult, onChange]);
