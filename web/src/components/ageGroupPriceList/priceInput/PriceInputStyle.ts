@@ -9,28 +9,25 @@ export const PriceInputContainer = styled('div')({
 export const PriceInputTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     background: '#DDDDDD',
-    '& fieldset': {
-      borderColor: '#000000',
-      opacity: 0.2,
+    height: 42,
+    '&.Mui-focused fieldset': {
+      borderColor: '#adacac',
+      opacity: 0.3,
       borderWidth: 1,
     },
-    '&:hover fieldset': {
-      borderColor: '#000000',
-      opacity: 0.2,
+     '&.Mui-error fieldset': {
+      borderColor: '#adacac',
+      opacity: 0.3,
       borderWidth: 1,
-    },
-    '&.Mui-focused fieldset, &.Mui-error fieldset': {
-      borderColor: '#000000',
-      opacity: 0.1,
-      borderWidth: 1.5,
     },
     input: {
       paddingLeft: 8,
       background: 'white',
+      borderRight: '0.5px solid #adacac',
+      borderRadius: '0 4px 4px 0',
     },
     '&.Mui-error input': {
-      border: '1.5px solid #FF8988',
-      borderRadius: '0 4px 4px 0',
+      border: '1px solid #FF0000',
     },
     '& .MuiInputAdornment-root': {
       '& .MuiTypography-root p': {
@@ -39,9 +36,11 @@ export const PriceInputTextField = styled(TextField)({
     },
   },
   '& .MuiFormHelperText-root.Mui-error': {
-    backgroundColor: '#FFCCCC',
+    background: '#ffe6e6',
+    color: '#f74343',
+    fontWeight: 'bold',
     borderRadius: 4,
-    padding: '4px 8px',
+    padding: 4,
     margin: 0,
     opacity: 0.8,
   },

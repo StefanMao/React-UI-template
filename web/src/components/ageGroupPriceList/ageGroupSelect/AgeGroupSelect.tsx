@@ -7,6 +7,7 @@ import {
   AgeGroupSelectContainer,
   MiddleAdornment,
   AgeSelect,
+  ErrorHelperText,
 } from '../ageGroupSelect/AgeGroupSelectStyle';
 import { FieldSmallDescription } from '../../commonUI/CommonUI';
 
@@ -117,7 +118,7 @@ const AgeGroupSelect: React.FC<AgeGroupSelectProps> = (props) => {
         </AgeSelect>
       </Stack>
       {isError && (
-        <FormHelperText error>年齡區間不可重疊</FormHelperText>
+        <ErrorHelperText>年齡區間不可重疊</ErrorHelperText>
       )}
     </AgeGroupSelectContainer>
   );
