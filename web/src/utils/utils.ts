@@ -105,8 +105,8 @@ function findNotIncludeIntervals(
   maxRange: number,
 ): number[][] {
   const notIncludeIntervals: number[][] = [];
-
-  if (currentStart > previousEnd && previousEnd < maxRange) {
+  
+  if (currentStart > previousEnd +1) {
     notIncludeIntervals.push([previousEnd + 1, Math.min(currentStart - 1, maxRange)]);
   }
 

@@ -56,6 +56,22 @@ describe('getNumberIntervals', () => {
     expect(result.notInclude).toEqual([[0, 4], [12, 13]]);
   });
 
+  it('should correctly identify notInclude intervals', () => {
+    const inputIntervals = [[6, 11], [12, 20]];
+    const result = getNumberIntervals(inputIntervals);
+
+    expect(result.overlap).toEqual([]);
+    expect(result.notInclude).toEqual([[0,5]]);
+  });
+
+  it('should correctly identify notInclude intervals', () => {
+    const inputIntervals = [[6, 10], [15, 17]];
+    const result = getNumberIntervals(inputIntervals);
+
+    expect(result.overlap).toEqual([]);
+    expect(result.notInclude).toEqual([[0,5], [11, 14], [18, 20]]);
+  });
+
   it('should correctly identify non-overlapping intervals', () => {
     const inputIntervals = [[1, 5]];
     const result = getNumberIntervals(inputIntervals);
