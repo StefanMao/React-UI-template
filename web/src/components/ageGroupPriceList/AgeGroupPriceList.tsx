@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useFieldArray, useForm, Control, FieldArrayWithId, useWatch } from 'react-hook-form';
-import { Stack, Divider } from '@mui/material';
+import { Stack, Divider, Snackbar, Alert } from '@mui/material';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
@@ -27,6 +27,7 @@ interface AgeGroupPriceListStates {
   fields: FieldArrayWithId<PriceListFormValues, 'ageGroupPriceList', 'id'>[];
   isAgeGroupFieldsError: boolean;
   isAddPriceSettingButtonDisabled: boolean;
+  isShowRemoveMsg: boolean;
 }
 
 interface AgeGroupPriceListActions {
@@ -34,13 +35,16 @@ interface AgeGroupPriceListActions {
   handleRemove: (index: number) => void;
   handleFormSubmit: (data: any) => void;
   handleGroupAgeSelectChange: () => void;
+  handleCloseRemoveMsg: () => void;
 }
 
 const ageSelectOptions = Array.from({ length: 21 }, (_, index) => index);
 
-export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPriceListStates, AgeGroupPriceListActions] => {
+export const useAgeGroupPriceList = (
+  props: AgeGroupPriceListProps,
+): [AgeGroupPriceListStates, AgeGroupPriceListActions] => {
   const { onChange } = props;
-
+  const [isShowRemoveMsg, setIsShowRemoveMsg] = useState<boolean>(false);
   const [numberIntervalsResult, setNumberIntervalsResult] = useState<IIntervalResult>({
     overlap: [],
     notInclude: [],
@@ -55,7 +59,7 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
 
   const ageGroupPriceListResult = useWatch({
     control: control,
-    name: "ageGroupPriceList"
+    name: 'ageGroupPriceList',
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: 'ageGroupPriceList' });
@@ -81,6 +85,12 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
   const handleRemove = (index: number): void => {
     remove(index);
     handleGroupAgeSelectChange();
+
+    setIsShowRemoveMsg(true);
+  };
+
+  const handleCloseRemoveMsg = () => {
+    setIsShowRemoveMsg(false);
   };
 
   const updateAgeGroupFieldsError = useCallback(() => {
@@ -98,37 +108,53 @@ export const useAgeGroupPriceList = (props: AgeGroupPriceListProps): [AgeGroupPr
   }, [numberIntervalsResult, updateAgeGroupFieldsError]);
 
   useEffect(() => {
-    const resultWithFloatPrices = ageGroupPriceListResult.map(item => ({
+    const resultWithFloatPrices = ageGroupPriceListResult.map((item) => ({
       ...item,
       price: item.price === '' ? null : parseFloat(item.price),
     }));
     onChange(resultWithFloatPrices);
   }, [ageGroupPriceListResult, onChange]);
 
-  const states = { control, fields, isAgeGroupFieldsError, isAddPriceSettingButtonDisabled };
+  const states = {
+    control,
+    fields,
+    isAgeGroupFieldsError,
+    isAddPriceSettingButtonDisabled,
+    isShowRemoveMsg,
+  };
   const actions = {
     handleAppend,
     handleRemove,
     handleFormSubmit,
     handleGroupAgeSelectChange,
+    handleCloseRemoveMsg,
   };
   return [states, actions];
 };
 
 const AgeGroupPriceList: React.FC<AgeGroupPriceListProps> = (props) => {
   const [states, actions] = useAgeGroupPriceList(props);
-  const { control, fields, isAgeGroupFieldsError, isAddPriceSettingButtonDisabled } = states;
+  const {
+    control,
+    fields,
+    isAgeGroupFieldsError,
+    isAddPriceSettingButtonDisabled,
+    isShowRemoveMsg,
+  } = states;
   const {
     handleAppend,
     handleRemove,
     handleFormSubmit,
     handleGroupAgeSelectChange,
+    handleCloseRemoveMsg,
   } = actions;
-
 
   return (
     <AgeGroupPriceListContainer>
-      <form style={{ flex: 'auto', height: 0, overflow: 'auto', paddingRight: 12 }} onSubmit={handleFormSubmit}>
+      <form
+        style={{ flex: 'auto', height: 0, overflow: 'auto', paddingRight: 12 }}
+        onSubmit={handleFormSubmit}
+      >
         {fields.map((field, index) => (
           <AgeGroupInputContainer
             key={field.id}
@@ -176,6 +202,16 @@ const AgeGroupPriceList: React.FC<AgeGroupPriceListProps> = (props) => {
           </AgeGroupInputContainer>
         ))}
       </form>
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} open={isShowRemoveMsg} autoHideDuration={3000} onClose={handleCloseRemoveMsg}>
+        <Alert
+          onClose={handleCloseRemoveMsg}
+          severity="success"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          刪除成功 !
+        </Alert>
+      </Snackbar>
     </AgeGroupPriceListContainer>
   );
 };

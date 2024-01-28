@@ -48,10 +48,11 @@ const PriceInput: React.FC<PriceInputProps> = (props) => {
         helperText={invalid ? error?.message || '不可以為空白' : ''}
         InputProps={{
           startAdornment: <InputAdornment position="start">TWD</InputAdornment>,
+          inputProps: { maxLength: 20 },
         }}
         onChange={handleChange}
       />
-      <FieldSmallDescription align="right">輸入0表示免費</FieldSmallDescription>
+      <FieldSmallDescription align="right">輸入 0 表示免費</FieldSmallDescription>
     </PriceInputContainer>
   );
 };
