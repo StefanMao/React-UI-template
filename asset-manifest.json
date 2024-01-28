@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/React-UI-Template/static/css/main.3949245a.css",
-    "main.js": "/React-UI-Template/static/js/main.53cd614f.js",
-    "static/js/787.aadca95f.chunk.js": "/React-UI-Template/static/js/787.aadca95f.chunk.js",
-    "index.html": "/React-UI-Template/index.html",
-    "main.3949245a.css.map": "/React-UI-Template/static/css/main.3949245a.css.map",
-    "main.53cd614f.js.map": "/React-UI-Template/static/js/main.53cd614f.js.map",
-    "787.aadca95f.chunk.js.map": "/React-UI-Template/static/js/787.aadca95f.chunk.js.map"
+    "main.css": "/react-ui-template/static/css/main.3949245a.css",
+    "main.js": "/react-ui-template/static/js/main.3436b25f.js",
+    "static/js/787.aadca95f.chunk.js": "/react-ui-template/static/js/787.aadca95f.chunk.js",
+    "index.html": "/react-ui-template/index.html",
+    "main.3949245a.css.map": "/react-ui-template/static/css/main.3949245a.css.map",
+    "main.3436b25f.js.map": "/react-ui-template/static/js/main.3436b25f.js.map",
+    "787.aadca95f.chunk.js.map": "/react-ui-template/static/js/787.aadca95f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3949245a.css",
-    "static/js/main.53cd614f.js"
+    "static/js/main.3436b25f.js"
   ]
 }
