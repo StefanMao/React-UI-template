@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import Grid from '@mui/material/Grid';
+import { Grid, Typography } from '@mui/material';
 
 export const Layout = styled(Grid)({
   minHeight: '100vh',
@@ -9,3 +9,10 @@ export const Layout = styled(Grid)({
   justifyContent: 'center',
   alignItems: 'center',
 });
+
+export const Description = styled(Typography)({
+  fontSize: 18,
+  color: '#666666',
+  marginBottom: 4,
+  textAlign: 'left',
+})
